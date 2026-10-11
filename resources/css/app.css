@@ -1,0 +1,68 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+    /* App shell sidebar: full width on small screens, a 270px column on large
+       screens, and an 88px icon-only rail once collapsed. The state lives on
+       <html data-sidebar> so it is known before the first paint (see the inline
+       script in layouts/app.blade.php) and is toggled by Alpine. */
+    .app-sidebar {
+        width: 100%;
+        padding-right: 1.25rem;
+        padding-left: 1.25rem;
+    }
+
+    .sidebar-indicator {
+        left: -1.25rem;
+    }
+
+    @media (min-width: 1024px) {
+        .app-sidebar {
+            width: 270px;
+            transition: width 200ms ease;
+        }
+
+        /* Expanded: the brand stays centred like the design while the toggle
+           sits in the free space to its right. */
+        .sidebar-toggle {
+            position: absolute;
+            top: 50%;
+            right: 0;
+            transform: translateY(-50%);
+        }
+
+        html[data-sidebar='collapsed'] .app-sidebar {
+            width: 88px;
+            padding-right: 0.5rem;
+            padding-left: 0.5rem;
+        }
+
+        /* Labels and the brand text step aside so only icons remain. */
+        html[data-sidebar='collapsed'] .app-sidebar .sidebar-label {
+            display: none;
+        }
+
+        html[data-sidebar='collapsed'] .app-sidebar .sidebar-center {
+            justify-content: center;
+        }
+
+        /* Collapsed: no room beside the brand, so the toggle drops below it. */
+        html[data-sidebar='collapsed'] .app-sidebar .sidebar-head {
+            flex-direction: column;
+        }
+
+        html[data-sidebar='collapsed'] .app-sidebar .sidebar-toggle {
+            position: static;
+            transform: none;
+        }
+
+        html[data-sidebar='collapsed'] .app-sidebar .sidebar-indicator {
+            left: -0.5rem;
+        }
+
+        html[data-sidebar='collapsed'] .app-sidebar .sidebar-toggle-icon {
+            transform: rotate(180deg);
+        }
+    }
+}
